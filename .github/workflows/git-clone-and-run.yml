@@ -1,0 +1,45 @@
+name: Git clone and run
+run-name: Git clone and run
+on: [ push, pull_request ]
+jobs:
+  linux-git-clone-and-run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/checkout@v3
+      - name: install ffmpeg, espeak-ng
+        run: sudo apt-get update && sudo apt-get install ffmpeg espeak-ng --fix-missing
+      - name: Install dependencies
+        run: pip install .
+      - name: check it runs as script
+        run: audiblez --help
+      - name: download test epub
+        run: wget https://github.com/daisy/epub-accessibility-tests/releases/download/fundamental-2.0/Fundamental-Accessibility-Tests-Basic-Functionality-v2.0.0.epub
+      - name: create audiobook
+        run: audiblez Fundamental-Accessibility-Tests-Basic-Functionality-v2.0.0.epub
+      - name: check m4b output file
+        run: ls -lah Fundamental-Accessibility-Tests-Basic-Functionality-v2.0.0.m4b
+  #      - name: run unit-tests (unittest classes in /test)
+  #        run:  poetry run python -m unittest discover test
+  windows-git-clone-and-run:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: pip install .
+      - name: check it runs as script
+        run: audiblez --help
+      - name: download test epub on windows using powershell
+        run: Invoke-WebRequest -Uri https://github.com/daisy/epub-accessibility-tests/releases/download/fundamental-2.0/Fundamental-Accessibility-Tests-Basic-Functionality-v2.0.0.epub -OutFile book.epub
+      - name: create audiobook
+        run: audiblez book.epub
+      - name: check book.m4b file exists in current directory
+        run: Get-ChildItem -Path .\ -Filter *.m4b
+

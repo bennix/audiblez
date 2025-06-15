@@ -1,0 +1,44 @@
+[project]
+name = "audiblez"
+version = "0.4.9"
+description = "Generate audiobooks from e-books (epub to wav/m4b)"
+authors = [
+    { name = "Claudio Santini", email = "hireclaudio@gmail.com" }
+]
+readme = "README.md"
+requires-python = ">=3.9,<3.13"
+dependencies = [
+    "ebooklib (>=0.18,<0.19)",
+    "soundfile (>=0.13.1,<0.14.0)",
+    "pick (>=2.4.0,<3.0.0)",
+    "bs4 (>=0.0.2,<0.0.3)",
+    "spacy (>=3.8.3,<4.0.0)",
+    "kokoro (>=0.7.9,<0.8.0)",
+    "misaki[zh] (>=0.7.10,<0.8.0)",
+    "tabulate (>=0.9.0,<0.10.0)",
+]
+exclude = [
+    "imgs",
+    "test",
+    "*.wav",
+    "*.m4b",
+    "cover",
+    "chapters.txt"
+]
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[project.urls]
+Homepage = "https://claudio.uk/posts/epub-to-audiobook.html"
+Documentation = "https://github.com/santinic/audiblez"
+Repository = "https://github.com/santinic/audiblez"
+Issues = "https://github.com/santinic/audiblez/issues"
+
+[project.scripts]
+audiblez = "audiblez.cli:cli_main"
+audiblez-ui = "audiblez.ui:main"
+
+[tool.poetry.group.dev.dependencies]
+deptry = "^0.23.0"
